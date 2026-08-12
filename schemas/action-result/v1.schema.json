@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/action-result/v1.schema.json",
+  "title": "ActionResult v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5: action_id, idempotency_key, dry_run, started_at, ended_at, status, changed_resources, verification, rollback_ref. Idempotency_key obligatoria (AC13, ADR-002: consumidores idempotentes). Productor: Shuffle/tool -> SmartOps/evidence.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "action_id",
+        "idempotency_key",
+        "dry_run",
+        "started_at",
+        "status"
+      ],
+      "properties": {
+        "action_id": {
+          "type": "string"
+        },
+        "idempotency_key": {
+          "type": "string"
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "succeeded",
+            "failed",
+            "rolled_back",
+            "in_progress"
+          ]
+        },
+        "changed_resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification": {
+          "type": "object",
+          "description": "Resultado de la verificación posterior a la ejecución (AC11-AC12)",
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "detail": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "rollback_ref": {
+          "type": "string",
+          "description": "Referencia al ActionResult de rollback si status=rolled_back"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

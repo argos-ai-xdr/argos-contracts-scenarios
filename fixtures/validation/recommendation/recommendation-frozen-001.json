@@ -1,0 +1,24 @@
+{
+  "id": "01J0VAL0000000000000003",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-10T08:06:00Z",
+  "producer": "langgraph-recommendation",
+  "classification": "internal",
+  "run_id": "run-validation-frozen-001",
+  "payload_hash": "sha256:2222222222222222222222222222222222222222222222222222222222ce0000",
+  "recommendation_id": "reco-val-frozen-001",
+  "incident_id": "incident-val-frozen-001",
+  "alternatives": [
+    {
+      "action": "isolate_kubernetes_workload",
+      "description": "Aplicar CiliumNetworkPolicy temporal sobre deployment/gseg-simulado"
+    }
+  ],
+  "selected_action": "isolate_kubernetes_workload",
+  "rationale_refs": [
+    "fixtures/validation/incident/incident-frozen-001.json"
+  ],
+  "impact": "Aislamiento de red del pod afectado",
+  "uncertainty": "Media",
+  "rollback_plan": "Revertir CiliumNetworkPolicy y restaurar réplicas originales"
+}

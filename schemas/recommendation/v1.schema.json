@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/recommendation/v1.schema.json",
+  "title": "Recommendation v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5: recommendation_id, incident_id, alternatives, selected_action, rationale_refs, impact, uncertainty, rollback_plan. El LLM no decide autorización (ADR-005/ADR-008): esta salida solo propone, OPA decide. Productor: LangGraph -> OPA/SmartOps.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "recommendation_id",
+        "incident_id",
+        "alternatives",
+        "rationale_refs",
+        "impact",
+        "uncertainty",
+        "rollback_plan"
+      ],
+      "properties": {
+        "recommendation_id": {
+          "type": "string"
+        },
+        "incident_id": {
+          "type": "string"
+        },
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "action",
+              "description"
+            ],
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "selected_action": {
+          "type": "string",
+          "description": "Referencia a una de las alternatives; ausente si aún no hay selección"
+        },
+        "rationale_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Referencias a evidencia/CTI que fundamentan la recomendación (AC08, sin CTI inventada)"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "uncertainty": {
+          "type": "string"
+        },
+        "rollback_plan": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

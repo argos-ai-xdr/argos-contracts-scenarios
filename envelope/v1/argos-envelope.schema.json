@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/envelope/v1/argos-envelope.schema.json",
+  "title": "ARGOS Event Envelope v1",
+  "description": "Wrapper común a los 10 contratos v1 (ADR-001, alineado con OCSF). Cada schema de ../../schemas/ lo referencia vía allOf y añade sus campos específicos. El payload nativo de la fuente nunca se reescribe: se referencia por native_ref.",
+  "type": "object",
+  "required": [
+    "id",
+    "schema_version",
+    "observed_at",
+    "producer",
+    "classification",
+    "run_id",
+    "payload_hash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "UUID o ULID, no reutilizable",
+      "pattern": "^[0-9A-Za-z-]{20,36}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC, RFC 3339"
+    },
+    "producer": {
+      "type": "string",
+      "description": "Servicio o conector que emitió el objeto, p. ej. wazuh-adapter, normalizer, correlator"
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["internal", "confidential", "restricted"]
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Correlación transversal de la ejecución (ver argos-control/architecture)"
+    },
+    "trace_id": {
+      "type": "string",
+      "description": "Correlación OpenTelemetry (ADR-009), opcional si el productor no emite trazas todavía"
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Referencias a artefactos en el evidence store (Ceph RGW/OpenSearch, ADR-006), no el contenido inline"
+    },
+    "native_ref": {
+      "type": "string",
+      "description": "Referencia al payload nativo de la fuente (no reescrito) — ADR-001. Ausente en contratos que no derivan de un evento de fuente externa (p. ej. Approval)."
+    }
+  },
+  "additionalProperties": true
+}

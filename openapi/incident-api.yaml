@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: ARGOS Incident API
+  version: "1.0.0"
+  description: >-
+    Consulta de incidentes producidos por el correlator (argos-core).
+    Solo lectura: ningún endpoint de esta API permite modificar timeline
+    ni evidence_refs una vez emitidos (Incident v1, 6.5).
+servers:
+  - url: "https://TODO.argos.internal/incident-api/v1"
+paths:
+  /incidents:
+    get:
+      summary: Listar incidentes
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+        - name: since
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Lista de incidentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schemas/incident/v1.schema.json"
+  /incidents/{incident_id}:
+    get:
+      summary: Obtener un incidente por ID
+      parameters:
+        - name: incident_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Incidente
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/incident/v1.schema.json"
+        "404":
+          description: No encontrado

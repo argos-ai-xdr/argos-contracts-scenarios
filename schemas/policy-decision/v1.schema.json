@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/policy-decision/v1.schema.json",
+  "title": "PolicyDecision v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5: decision_id, policy_version, subject, tool, action, target, result (ALLOW/DENY/APPROVAL_REQUIRED), reason. El result enum se fija a los 3 valores de ADR-005 (DENY, ALLOW_DRY_RUN, APPROVAL_REQUIRED) — no existe un ALLOW de ejecución directa en el MVP (ADR-011, hasta L3). Productor: OPA -> agent/SOAR.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "decision_id",
+        "policy_version",
+        "subject",
+        "tool",
+        "action",
+        "target",
+        "result",
+        "reason"
+      ],
+      "properties": {
+        "decision_id": {
+          "type": "string"
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Identidad del solicitante (workload o usuario)"
+        },
+        "tool": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "DENY",
+            "ALLOW_DRY_RUN",
+            "APPROVAL_REQUIRED"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/approval/v1.schema.json",
+  "title": "Approval v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5: approval_id, action_id, approver_id, role, decision, reason, issued_at, expires_at, signature/ref. TTL y anti-replay (AC10): un consumidor debe rechazar toda aprobación con expires_at en el pasado o con signature_ref inválida. Productor: SmartOps -> Shuffle.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "approval_id",
+        "action_id",
+        "approver_id",
+        "role",
+        "decision",
+        "reason",
+        "issued_at",
+        "expires_at",
+        "signature_ref"
+      ],
+      "properties": {
+        "approval_id": {
+          "type": "string"
+        },
+        "action_id": {
+          "type": "string"
+        },
+        "approver_id": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "description": "Rol RACI del aprobador, ver argos-control/governance/raci/raci.md (p. ej. soc-approver)"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "signature_ref": {
+          "type": "string",
+          "description": "Firma del approval_id + plan_hash; cualquier modificación posterior invalida la firma"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

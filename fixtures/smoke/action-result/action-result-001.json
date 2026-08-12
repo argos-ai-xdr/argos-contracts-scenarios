@@ -1,0 +1,22 @@
+{
+  "id": "01J0SMOKE0000000000000008",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:09:00Z",
+  "producer": "shuffle-executor",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000b10000",
+  "action_id": "policy-smoke-001",
+  "idempotency_key": "idem-smoke-001",
+  "dry_run": false,
+  "started_at": "2026-08-12T10:09:00Z",
+  "ended_at": "2026-08-12T10:09:05Z",
+  "status": "succeeded",
+  "changed_resources": [
+    "ciliumnetworkpolicy/gseg-simulado-isolate"
+  ],
+  "verification": {
+    "passed": true,
+    "detail": "Egress bloqueado salvo sinkhole; servicios no objetivo sin impacto"
+  }
+}

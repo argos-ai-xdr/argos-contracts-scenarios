@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.pytest_cache/
+
+# Secrets and local overrides — never commit
+.env
+.env.*
+*.local.yaml
+secrets/
+
+# Snapshots/datasets reales y evidencia — solo manifiestos (hash) en Git, no
+# el contenido completo (ADR-016). Los directorios reales de snapshot bajan
+# aquí si alguna vez se materializan localmente.
+snapshots/**/raw/
+evidence/
+reports/generated/

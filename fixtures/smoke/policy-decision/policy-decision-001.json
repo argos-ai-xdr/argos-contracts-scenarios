@@ -1,0 +1,17 @@
+{
+  "id": "01J0SMOKE0000000000000006",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:07:00Z",
+  "producer": "opa-pdp",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0000",
+  "decision_id": "policy-smoke-001",
+  "policy_version": "0.1.0",
+  "subject": "langgraph-recommendation",
+  "tool": "isolate_kubernetes_workload",
+  "action": "execute",
+  "target": "deployment/gseg-simulado",
+  "result": "APPROVAL_REQUIRED",
+  "reason": "risk_level=high requiere aprobación humana (tool-catalog isolate_kubernetes_workload v1.0.0)"
+}

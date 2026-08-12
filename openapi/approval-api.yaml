@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: ARGOS Approval API
+  version: "1.0.0"
+  description: >-
+    API de aprobación HITL (SmartOps -> Shuffle, Approval v1). Todo POST
+    requiere identidad OIDC del operador (Keycloak, ADR-004) con rol
+    soc-approver y produce una Approval firmada con TTL (AC10).
+servers:
+  - url: "https://TODO.argos.internal/approval-api/v1"
+paths:
+  /approvals:
+    post:
+      summary: Registrar la decisión de un aprobador sobre una acción propuesta
+      security:
+        - oidc: [soc-approver]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/approval/v1.schema.json"
+      responses:
+        "201":
+          description: Approval registrada
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/approval/v1.schema.json"
+        "409":
+          description: >-
+            El plan_hash de la acción ya no coincide (la acción fue
+            modificada tras generarse la recomendación) — la aprobación
+            se rechaza, no se registra.
+  /approvals/{approval_id}:
+    get:
+      summary: Consultar una aprobación
+      parameters:
+        - name: approval_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Approval
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/approval/v1.schema.json"
+        "404":
+          description: No encontrada
+components:
+  securitySchemes:
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: "https://TODO.argos.internal/keycloak/realms/argos-ai-xdr/.well-known/openid-configuration"

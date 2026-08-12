@@ -1,0 +1,46 @@
+# Ficha del escenario ARGOS-CYB-01 — documento maestro v0.5, 5.1-5.2 (literal).
+name: "Exposición vulnerable, escalada de privilegios y contención supervisada en Kubernetes"
+objective: >-
+  Demostrar detección, priorización, validación de ruta de ataque, triaje,
+  recomendación HITL, contención reversible y handover SOC.
+environment: >-
+  Cyber-range aislado en Kubernetes; namespace argos-cyber-range; egress
+  denegado salvo repositorios y endpoints sinkhole aprobados.
+critical_asset: >-
+  Servicio GSEG simulado con Perfil de Seguridad del Elemento alto en
+  integridad y disponibilidad.
+initial_condition: >-
+  Imagen fijada con vulnerabilidad conocida de laboratorio, ServiceAccount
+  con RBAC excesivo y comunicación de prueba hacia la DMZ.
+actor: >-
+  Emulación controlada mediante Atomic Red Team/Kubernetes Goat o scripts
+  propios revisados; sin explotación contra activos externos.
+expected_result: >-
+  Incidente correlacionado, opciones de remediación fundamentadas,
+  aprobación explícita, aislamiento por Cilium, verificación y rollback.
+out_of_scope:
+  - "Persistencia real"
+  - "Malware activo"
+  - "Credenciales productivas"
+  - "Internet abierto"
+  - "Cambios en GSEG real"
+  - "Contención autónoma no aprobada"
+
+# 5.2. Hipótesis, precondiciones y límites de seguridad
+constraints:
+  - "La infraestructura del escenario se crea y destruye mediante manifests/Helm versionados; todos los artefactos quedan fijados por commit y digest."
+  - "Los IoCs, CVE, técnicas ATT&CK y puntuaciones EPSS se capturan como snapshots con fecha y hash para evitar resultados variables por consultas online."
+  - "El namespace, las identidades, los endpoints y las acciones permitidas forman una allowlist cerrada. Todo destino no incluido debe producir DENY."
+  - "La primera ejecución de cualquier acción de remediación se realiza en DRY-RUN. El paso EXECUTE requiere aprobación humana autenticada y vinculada al action_id."
+  - "La contención permitida se limita a aplicar una CiliumNetworkPolicy temporal o escalar a cero un deployment de laboratorio. La eliminación irreversible queda prohibida."
+  - "El operador dispone de kill switch y rollback independiente del agente. Los reintentos son idempotentes y no pueden duplicar la acción."
+  - "No se almacenará chain-of-thought. La auditoría conservará inputs, herramientas, evidencias, decisión, política aplicada, salida estructurada y aprobación."
+
+references:
+  checkpoints: "checkpoints/checkpoints.yaml"
+  fixtures: "../../fixtures/"
+  ground_truth: "ground-truth/"
+  policies: "policies/"
+  cyber_range: "argos-platform repo, cyber-range/ (bootstrap, targets/allowlist.yaml, reset, kill-switch)"
+  gates: "argos-control/governance/gates/gates.md (G0-G7)"
+  acceptance_criteria: "argos-control/project/acceptance/acceptance-criteria.yaml (AC01-AC14)"

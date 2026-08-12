@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: ARGOS Evidence API
+  version: "1.0.0"
+  description: >-
+    Consulta de evidencia (evidence-writer -> release gate, EvidenceManifest
+    v1). Solo lectura: la evidencia ya escrita no es modificable por ningún
+    cliente de esta API, incluido el agente (ADR-006/ADR-016).
+servers:
+  - url: "https://TODO.argos.internal/evidence-api/v1"
+paths:
+  /runs/{run_id}/manifest:
+    get:
+      summary: Obtener el EvidenceManifest de una ejecución
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: EvidenceManifest
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/evidence-manifest/v1.schema.json"
+        "404":
+          description: No encontrado
+  /runs/{run_id}/artifacts/{artifact_id}:
+    get:
+      summary: Obtener metadatos de un artefacto de evidencia (no el contenido)
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: artifact_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >-
+            Metadatos del artefacto (sha256, object_ref, retention). El
+            contenido real se obtiene resolviendo object_ref contra Ceph RGW,
+            no desde esta API.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/evidence-manifest/v1.schema.json"
+        "404":
+          description: No encontrado

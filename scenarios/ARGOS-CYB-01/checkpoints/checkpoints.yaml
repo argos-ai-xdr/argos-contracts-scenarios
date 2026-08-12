@@ -1,0 +1,70 @@
+# Secuencia de demostración — documento maestro v0.5, 5.4 (literal).
+# min_evidence es el nombre de archivo mínimo esperado; su contenido real se
+# genera durante la ejecución (no versionado aquí, ver ADR-016) salvo que
+# exista un fixture congelado equivalente en ../../../fixtures/validation/.
+checkpoints:
+  - id: CP00
+    phase: "Reset y atestación"
+    observable_action: "Desplegar versión congelada, verificar hashes y ausencia de residuos."
+    min_evidence: "baseline_manifest.json"
+  - id: CP01
+    phase: "Inyección controlada"
+    observable_action: "Crear workload vulnerable, RBAC excesivo y tráfico sinkhole."
+    min_evidence: "deployment_log + change_id"
+  - id: CP02
+    phase: "Descubrimiento"
+    observable_action: "Actualizar inventario y comparar as-built frente a as-designed."
+    min_evidence: "asset_diff.json"
+    contract: asset-snapshot
+  - id: CP03
+    phase: "Vulnerabilidad"
+    observable_action: "Ingerir SBOM/scans y resolver CVE-paquete-activo."
+    min_evidence: "vulnerability_findings.json"
+    contract: vulnerability-finding
+  - id: CP04
+    phase: "Priorización"
+    observable_action: "Combinar ESP, exposición, KEV, EPSS y fix disponible."
+    min_evidence: "risk_ranking.json"
+  - id: CP05
+    phase: "Ruta de ataque"
+    observable_action: "Construir grafo RBAC/red y validar escalada/blast radius."
+    min_evidence: "attack_path.json"
+  - id: CP06
+    phase: "Telemetría"
+    observable_action: "Capturar Wazuh, Falco, Hubble y Kubernetes Audit."
+    min_evidence: "events.ndjson"
+    contract: security-event
+  - id: CP07
+    phase: "Correlación CTI"
+    observable_action: "Crear incidente y enriquecerlo desde MISP/ATT&CK versionados."
+    min_evidence: "incident.json"
+    contract: incident
+  - id: CP08
+    phase: "Recomendación"
+    observable_action: "LangGraph propone alternativas, impacto, evidencia y rollback."
+    min_evidence: "recommendation.json"
+    contract: recommendation
+  - id: CP09
+    phase: "Simulación"
+    observable_action: "Shuffle ejecuta dry-run y comprueba dependencias afectadas."
+    min_evidence: "dry_run_result.json"
+    contract: action-result
+  - id: CP10
+    phase: "Aprobación HITL"
+    observable_action: "Operador aprueba/rechaza con identidad, motivo y caducidad."
+    min_evidence: "approval.json"
+    contract: approval
+  - id: CP11
+    phase: "Contención"
+    observable_action: "Aplicar política reversible únicamente si la aprobación es válida."
+    min_evidence: "action_result.json"
+    contract: action-result
+  - id: CP12
+    phase: "Verificación/rollback"
+    observable_action: "Confirmar bloqueo, salud y restauración del estado inicial."
+    min_evidence: "verification.json"
+  - id: CP13
+    phase: "SOC y evidencia"
+    observable_action: "Exportar handover filtrado y cerrar evidence pack firmado."
+    min_evidence: "handover + manifest"
+    contract: [soc-handover, evidence-manifest]

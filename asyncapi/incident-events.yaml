@@ -1,0 +1,26 @@
+asyncapi: 2.6.0
+info:
+  title: ARGOS Incident Events
+  version: "1.0.0"
+  description: >-
+    Incident publicado por el correlator (transporte "API+event": ver
+    openapi/incident-api.yaml para la vía síncrona). El evento notifica a
+    LangGraph/SmartOps de un incidente nuevo o actualizado; timeline y
+    evidence_refs son inmutables una vez emitidos (6.5).
+servers:
+  nats:
+    url: "nats://TODO.argos.internal:4222"
+    protocol: nats
+channels:
+  incident.v1:
+    subscribe:
+      summary: Incident creado o enriquecido
+      message:
+        $ref: "#/components/messages/Incident"
+components:
+  messages:
+    Incident:
+      name: Incident
+      contentType: application/json
+      payload:
+        $ref: "../schemas/incident/v1.schema.json"

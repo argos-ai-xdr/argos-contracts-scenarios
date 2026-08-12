@@ -1,0 +1,28 @@
+{
+  "id": "01J0SMOKE0000000000000005",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:06:00Z",
+  "producer": "langgraph-recommendation",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000ae0000",
+  "recommendation_id": "reco-smoke-001",
+  "incident_id": "incident-smoke-001",
+  "alternatives": [
+    {
+      "action": "isolate_kubernetes_workload",
+      "description": "Aplicar CiliumNetworkPolicy temporal sobre deployment/gseg-simulado"
+    },
+    {
+      "action": "scale_to_zero",
+      "description": "Escalar a cero el deployment vulnerable"
+    }
+  ],
+  "selected_action": "isolate_kubernetes_workload",
+  "rationale_refs": [
+    "fixtures/smoke/incident/incident-001.json"
+  ],
+  "impact": "Aislamiento de red del pod afectado; sin interrupción de otros servicios",
+  "uncertainty": "Media — confianza del incidente 'high', sin confirmación humana de exfiltración",
+  "rollback_plan": "Revertir CiliumNetworkPolicy y restaurar réplicas originales"
+}

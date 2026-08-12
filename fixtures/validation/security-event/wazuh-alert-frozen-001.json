@@ -1,0 +1,16 @@
+{
+  "id": "01J0VAL0000000000000001",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-10T08:00:00Z",
+  "producer": "wazuh-adapter",
+  "classification": "internal",
+  "run_id": "run-validation-frozen-001",
+  "payload_hash": "sha256:2222222222222222222222222222222222222222222222222222222222cc0000",
+  "native_ref": "wazuh://alert/70010",
+  "event_id": "evt-val-frozen-001",
+  "source": "wazuh",
+  "asset_id": "asset-gseg-01",
+  "workload_id": "deployment/gseg-simulado",
+  "severity_native": "12",
+  "severity_normalized": "high"
+}

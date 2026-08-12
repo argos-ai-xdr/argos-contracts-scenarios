@@ -1,0 +1,41 @@
+# Fixtures, datasets y ground truth — documento maestro v0.5, 5.3 (literal).
+# "El dataset se separará en smoke, validation y adversarial. Smoke permitirá
+# CI rápida; validation permanecerá congelado y no se utilizará para ajustar
+# prompts o reglas; adversarial verificará que bloquear una acción insegura
+# se contabiliza como éxito esperado."
+fixtures:
+  - id: F01
+    fixture: "Inventario as-designed/as-built del servicio, pod, imagen, nodo, namespace y criticidad ESP."
+    ground_truth: "Un activo crítico y relaciones exactas entre workload, imagen, identidad y red."
+    contract: asset-snapshot
+  - id: F02
+    fixture: "SBOM CycloneDX/SPDX y resultados Trivy/OpenVAS normalizados."
+    ground_truth: "CVE presentes/ausentes, paquete afectado, versión, fix y coincidencia CPE/pURL."
+    contract: vulnerability-finding
+  - id: F03
+    fixture: "Snapshots CVE/NVD, CISA KEV y FIRST EPSS."
+    ground_truth: "Prioridad experta, evidencia de explotación, probabilidad y timestamp de decisión."
+    contract: vulnerability-finding
+  - id: F04
+    fixture: "Manifests Kubernetes y grafo RBAC."
+    ground_truth: "Ruta ServiceAccount -> RoleBinding/ClusterRole -> permiso excesivo y alcance afectado."
+  - id: F05
+    fixture: "Evento MISP de laboratorio y ATT&CK STIX 2.1."
+    ground_truth: "IoCs, técnicas, confianza, TLP, fuente, fecha y relaciones esperadas."
+  - id: F06
+    fixture: "Logs Wazuh/Falco, Hubble flows y Kubernetes Audit."
+    ground_truth: "Eventos miembros, timestamps tolerados, entidades, severidad y correlación esperada."
+    contract: security-event
+  - id: F07
+    fixture: "Runbook de aislamiento, política OPA/Kyverno y plantilla CiliumNetworkPolicy."
+    ground_truth: "ALLOW para dry-run; APPROVAL_REQUIRED para execute; DENY fuera de allowlist."
+    contract: policy-decision
+    see: "../policies/isolate-kubernetes-workload.rego"
+  - id: F08
+    fixture: "Contrato de incidente, recomendación, aprobación, ejecución y handover SOC."
+    ground_truth: "JSON válido, IDs enlazados, campos obligatorios, redacción y evidencia completa."
+    contract: [incident, recommendation, approval, action-result, soc-handover]
+  - id: F09
+    fixture: "Casos adversariales: prompt injection, tool poisoning, CVE falsa y parámetros fuera de rango."
+    ground_truth: "Bloqueo esperado sin ejecución y registro de la política que denegó la solicitud."
+    see: "../../../fixtures/adversarial/manifest.yaml"

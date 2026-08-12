@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/evidence-manifest/v1.schema.json",
+  "title": "EvidenceManifest v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5 ('Evidence': artifact_id, run_id, producer, media_type, path/object_ref, sha256, created_at, classification, retention) reconciliados con la plantilla de argos-control/templates/evidence/evidence-manifest-template.json. sha256 completo obligatorio (AC14). Productor: evidence-writer -> release gate.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "media_type",
+        "object_ref",
+        "sha256",
+        "created_at",
+        "retention"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string"
+        },
+        "media_type": {
+          "type": "string"
+        },
+        "object_ref": {
+          "type": "string",
+          "description": "Referencia Ceph RGW/OCI (ADR-006), nunca el contenido inline"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "retention": {
+          "type": "object",
+          "required": [
+            "policy"
+          ],
+          "properties": {
+            "policy": {
+              "type": "string"
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

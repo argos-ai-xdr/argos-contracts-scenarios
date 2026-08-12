@@ -1,0 +1,20 @@
+name: argos-contracts-scenarios
+domain: data-contracts
+criticality: critical
+owner: xdr-data
+backup_owner: poa-architecture
+classification: internal
+lifecycle: active
+artifacts:
+  - json-schemas
+  - openapi-specs
+  - asyncapi-specs
+  - fixtures
+  - scenario-bundle
+dependencies: []
+consumed_by:
+  - argos-core
+  - argos-cyber-tools
+  - argos-smartops
+  - argos-validation
+proposal_source: ARGOS_Propuesta_Tecnica_Maestro_Vivo_v0.5.docx

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/asset-snapshot/v1.schema.json",
+  "title": "AssetSnapshot v1",
+  "description": "El documento maestro v0.5 no enumera los campos de AssetSnapshot en 5.5/6.5 explícitamente; este schema se DERIVA de F01 ('inventario as-designed/as-built del servicio, pod, imagen, nodo, namespace y criticidad ESP' y 'relaciones exactas entre workload, imagen, identidad y red') y de AC02 (cobertura y trazabilidad de activos). Revisar contra el schema real que publique ARG-004/007. Productor: CMAM/NetBox/KAudit -> risk-engine.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "asset_id",
+        "namespace",
+        "criticality_esp"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string"
+        },
+        "workload_id": {
+          "type": "string"
+        },
+        "image_ref": {
+          "type": "string"
+        },
+        "node": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "criticality_esp": {
+          "type": "string",
+          "description": "Perfil de Seguridad del Elemento (integridad/disponibilidad), ver ficha ARGOS-CYB-01, 5.1",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "relationships": {
+          "type": "object",
+          "description": "workload -> imagen -> identidad -> red (F01)",
+          "properties": {
+            "identity_ref": {
+              "type": "string"
+            },
+            "network_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

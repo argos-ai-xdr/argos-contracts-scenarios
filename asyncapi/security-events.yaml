@@ -1,0 +1,30 @@
+asyncapi: 2.6.0
+info:
+  title: ARGOS Security Events
+  version: "1.0.0"
+  description: >-
+    SecurityEvent publicado por Wazuh/Falco/Hubble/Kubernetes Audit sobre
+    NATS JetStream (ADR-001/ADR-002). Deduplicación por event_id; DLQ para
+    eventos que fallan validación de schema.
+servers:
+  nats:
+    url: "nats://TODO.argos.internal:4222"
+    protocol: nats
+channels:
+  security.event.v1:
+    subscribe:
+      summary: SecurityEvent normalizado (post-normalizer)
+      message:
+        $ref: "#/components/messages/SecurityEvent"
+  security.event.v1.dlq:
+    subscribe:
+      summary: Eventos rechazados por el normalizer (schema inválido, duplicado, fuera de allowlist de fuente)
+      message:
+        $ref: "#/components/messages/SecurityEvent"
+components:
+  messages:
+    SecurityEvent:
+      name: SecurityEvent
+      contentType: application/json
+      payload:
+        $ref: "../schemas/security-event/v1.schema.json"

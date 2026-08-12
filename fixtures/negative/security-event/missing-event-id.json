@@ -1,0 +1,13 @@
+{
+  "id": "01J0NEG00000000000000001",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:00:00Z",
+  "producer": "wazuh-adapter",
+  "classification": "internal",
+  "run_id": "run-neg-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000c00000",
+  "native_ref": "wazuh://alert/1",
+  "source": "wazuh",
+  "severity_native": "3",
+  "severity_normalized": "low"
+}

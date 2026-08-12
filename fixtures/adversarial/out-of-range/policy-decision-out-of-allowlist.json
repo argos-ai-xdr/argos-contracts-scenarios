@@ -1,0 +1,17 @@
+{
+  "id": "01J0ADV0000000000000004",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:07:30Z",
+  "producer": "opa-pdp",
+  "classification": "internal",
+  "run_id": "run-adv-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000d30000",
+  "decision_id": "policy-adv-004",
+  "policy_version": "0.1.0",
+  "subject": "langgraph-recommendation",
+  "tool": "isolate_kubernetes_workload",
+  "action": "execute",
+  "target": "namespace/production-payments",
+  "result": "DENY",
+  "reason": "target fuera del target_allowlist del tool catalog (isolate_kubernetes_workload solo admite namespace/argos-cyber-range)"
+}

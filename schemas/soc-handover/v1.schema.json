@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/soc-handover/v1.schema.json",
+  "title": "SOCHandover v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5 ('SOCHandover': case_id, incident summary, timeline, IoCs, ATT&CK, assets, actions, residual risk, evidence manifest, TLP). Debe filtrarse por TLP/clasificación y comprobarse la ausencia de campos prohibidos (PII/secretos/chain-of-thought, ADR-016) antes de exportar. Productor: SOC adapter -> SOC.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "case_id",
+        "incident_summary",
+        "timeline",
+        "assets",
+        "residual_risk",
+        "evidence_manifest_ref",
+        "tlp"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string"
+        },
+        "incident_summary": {
+          "type": "string"
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "iocs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attack_techniques": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^T\\d{4}(\\.\\d{3})?$"
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Referencias a ActionResult incluidos en el handover"
+        },
+        "residual_risk": {
+          "type": "string"
+        },
+        "evidence_manifest_ref": {
+          "type": "string",
+          "description": "Referencia al EvidenceManifest completo (no se reexporta el contenido)"
+        },
+        "tlp": {
+          "type": "string",
+          "enum": [
+            "RED",
+            "AMBER",
+            "GREEN",
+            "CLEAR"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

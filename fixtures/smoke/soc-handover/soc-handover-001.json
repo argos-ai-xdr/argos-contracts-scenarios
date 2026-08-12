@@ -1,0 +1,37 @@
+{
+  "id": "01J0SMOKE000000000000000A",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:11:00Z",
+  "producer": "soc-adapter",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000b30000",
+  "case_id": "case-smoke-001",
+  "incident_summary": "Escalada de privilegios detectada y contenida en el cyber-range de laboratorio",
+  "timeline": [
+    {
+      "timestamp": "2026-08-12T10:00:00Z",
+      "description": "Detección inicial"
+    },
+    {
+      "timestamp": "2026-08-12T10:09:05Z",
+      "description": "Contención verificada"
+    }
+  ],
+  "iocs": [
+    "dmz-sinkhole-01"
+  ],
+  "attack_techniques": [
+    "T1078",
+    "T1611"
+  ],
+  "assets": [
+    "asset-gseg-01"
+  ],
+  "actions": [
+    "action-result-001"
+  ],
+  "residual_risk": "Bajo — workload aislado, pendiente de parche de imagen",
+  "evidence_manifest_ref": "fixtures/smoke/evidence-manifest/evidence-manifest-001.json",
+  "tlp": "AMBER"
+}

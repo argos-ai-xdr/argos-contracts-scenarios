@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: ARGOS Recommendation API
+  version: "1.0.0"
+  description: >-
+    Recomendaciones producidas por LangGraph (argos-core) para un incidente.
+    El LLM no tiene autoridad de ejecución (ADR-005/ADR-008): esta API solo
+    expone alternativas, nunca ejecuta.
+servers:
+  - url: "https://TODO.argos.internal/recommendation-api/v1"
+paths:
+  /incidents/{incident_id}/recommendations:
+    get:
+      summary: Listar recomendaciones de un incidente
+      parameters:
+        - name: incident_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de recomendaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../schemas/recommendation/v1.schema.json"
+  /recommendations/{recommendation_id}:
+    get:
+      summary: Obtener una recomendación por ID
+      parameters:
+        - name: recommendation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recomendación
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/recommendation/v1.schema.json"
+        "404":
+          description: No encontrada

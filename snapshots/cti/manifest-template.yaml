@@ -1,0 +1,7 @@
+# Copiar por cada snapshot real (ARG-016). No versionar el snapshot completo.
+source: "misp" # o "attack-stix"
+version: "TODO"
+captured_at: "TODO (RFC 3339 UTC)"
+sha256: "TODO"
+license: "TODO"
+object_ref: "TODO (Ceph RGW, ver argos-platform/platform/ceph-rgw/README.md)"

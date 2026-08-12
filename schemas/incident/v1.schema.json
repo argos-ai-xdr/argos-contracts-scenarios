@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/incident/v1.schema.json",
+  "title": "Incident v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5: incident_id, member_event_ids, timeline, entities, ATT&CK, confidence, severity, evidence_refs. Timeline y evidence_refs inmutables una vez emitido (6.5). Productor: correlator -> LangGraph/SmartOps.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "incident_id",
+        "member_event_ids",
+        "timeline",
+        "entities",
+        "severity",
+        "evidence_refs"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string"
+        },
+        "member_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "timeline": {
+          "type": "array",
+          "description": "Inmutable una vez emitido",
+          "items": {
+            "type": "object",
+            "required": [
+              "timestamp",
+              "description"
+            ],
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "attack_techniques": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^T\\d{4}(\\.\\d{3})?$"
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Sobrescribe evidence_refs del envelope: en Incident es obligatorio y no vacío"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

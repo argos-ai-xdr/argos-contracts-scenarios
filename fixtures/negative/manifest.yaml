@@ -1,0 +1,14 @@
+# Cada fixture de negative/ DEBE fallar la validación de schema. El validador
+# (../../validators/validate_fixtures.py) trata cualquier PASS aquí como un
+# fallo de test (un negativo que valida significa que el schema es demasiado
+# permisivo).
+cases:
+  - fixture: security-event/missing-event-id.json
+    schema: security-event
+    reason: "falta event_id (required)"
+  - fixture: vulnerability-finding/missing-purl-and-cpe.json
+    schema: vulnerability-finding
+    reason: "falta purl y cpe (anyOf exige al menos uno)"
+  - fixture: vulnerability-finding/epss-out-of-range.json
+    schema: vulnerability-finding
+    reason: "epss=1.5 fuera de [0,1]"

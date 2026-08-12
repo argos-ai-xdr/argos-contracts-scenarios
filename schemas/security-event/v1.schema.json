@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/security-event/v1.schema.json",
+  "title": "SecurityEvent v1",
+  "description": "Campos literales del documento maestro v0.5, 5.5 ('Event': event_id, schema_version, source, observed_at, asset_id, workload_id, severity, raw_ref, hash) reconciliados con ADR-001 (native_ref sustituye a raw_ref; envelope OCSF-aligned). Productor: Wazuh/Falco/Hubble/Audit -> correlator.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "event_id",
+        "source",
+        "severity_native",
+        "severity_normalized",
+        "native_ref"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string",
+          "description": "p. ej. wazuh, falco, hubble, kubernetes-audit"
+        },
+        "asset_id": {
+          "type": "string"
+        },
+        "workload_id": {
+          "type": "string"
+        },
+        "severity_native": {
+          "type": "string",
+          "description": "Valor de severidad tal como lo emite la fuente, sin normalizar (regla 6.5.1)"
+        },
+        "severity_normalized": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

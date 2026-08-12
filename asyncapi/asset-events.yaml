@@ -1,0 +1,35 @@
+asyncapi: 2.6.0
+info:
+  title: ARGOS Asset & Vulnerability Events
+  version: "1.0.0"
+  description: >-
+    AssetSnapshot y VulnerabilityFinding publicados sobre NATS JetStream
+    (ADR-002). Consumo idempotente por asset_id/finding_id (upsert, 6.5).
+servers:
+  nats:
+    url: "nats://TODO.argos.internal:4222"
+    protocol: nats
+    description: "Bus interno argos-ai-xdr (TLS, subjects allowlist, durable consumers)"
+channels:
+  asset.snapshot.v1:
+    subscribe:
+      summary: AssetSnapshot publicado por CMAM/NetBox/KAudit
+      message:
+        $ref: "#/components/messages/AssetSnapshot"
+  vulnerability.finding.v1:
+    subscribe:
+      summary: VulnerabilityFinding publicado por Trivy/OpenVAS/VMT
+      message:
+        $ref: "#/components/messages/VulnerabilityFinding"
+components:
+  messages:
+    AssetSnapshot:
+      name: AssetSnapshot
+      contentType: application/json
+      payload:
+        $ref: "../schemas/asset-snapshot/v1.schema.json"
+    VulnerabilityFinding:
+      name: VulnerabilityFinding
+      contentType: application/json
+      payload:
+        $ref: "../schemas/vulnerability-finding/v1.schema.json"

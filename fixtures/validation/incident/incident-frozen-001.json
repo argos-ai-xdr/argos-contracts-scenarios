@@ -1,0 +1,34 @@
+{
+  "id": "01J0VAL0000000000000002",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-10T08:05:00Z",
+  "producer": "correlator",
+  "classification": "internal",
+  "run_id": "run-validation-frozen-001",
+  "payload_hash": "sha256:2222222222222222222222222222222222222222222222222222222222cd0000",
+  "incident_id": "incident-val-frozen-001",
+  "member_event_ids": [
+    "evt-val-frozen-001"
+  ],
+  "timeline": [
+    {
+      "timestamp": "2026-08-10T08:00:00Z",
+      "description": "Alerta Wazuh de escalada de privilegios en gseg-simulado (set congelado)"
+    }
+  ],
+  "entities": [
+    {
+      "type": "asset",
+      "id": "asset-gseg-01"
+    }
+  ],
+  "attack_techniques": [
+    "T1078",
+    "T1611"
+  ],
+  "confidence": "high",
+  "severity": "high",
+  "evidence_refs": [
+    "fixtures/validation/security-event/wazuh-alert-frozen-001.json"
+  ]
+}
