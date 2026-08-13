@@ -6,6 +6,12 @@ info:
     Recomendaciones producidas por LangGraph (argos-core) para un incidente.
     El LLM no tiene autoridad de ejecución (ADR-005/ADR-008): esta API solo
     expone alternativas, nunca ejecuta.
+
+    Las respuestas son la vista transformada de Recommendation v1 (ver
+    argos-smartops api/recommendations.py: to_recommendation_view), no el
+    envelope entero — dependencies_affected se deriva de rationale_refs
+    (el propio contrato Recommendation no tiene un campo de dependencias
+    separado todavía, ver argos-contracts-scenarios/schemas/recommendation/).
 servers:
   - url: "https://TODO.argos.internal/recommendation-api/v1"
 paths:
@@ -26,7 +32,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "../schemas/recommendation/v1.schema.json"
+                  $ref: "#/components/schemas/RecommendationView"
   /recommendations/{recommendation_id}:
     get:
       summary: Obtener una recomendación por ID
@@ -42,6 +48,41 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../schemas/recommendation/v1.schema.json"
+                $ref: "#/components/schemas/RecommendationView"
         "404":
           description: No encontrada
+components:
+  schemas:
+    RecommendationView:
+      type: object
+      required: [recommendation_id, incident_id, alternatives, impact, uncertainty, rollback_plan]
+      properties:
+        recommendation_id:
+          type: string
+        incident_id:
+          type: string
+        alternatives:
+          type: array
+          items:
+            type: object
+            required: [action, description]
+            properties:
+              action:
+                type: string
+              description:
+                type: string
+        selected_action:
+          type: string
+          nullable: true
+          description: Referencia a una de las alternatives; ausente si aún no hay selección
+        impact:
+          type: string
+        uncertainty:
+          type: string
+        rollback_plan:
+          type: string
+        affected_dependencies_refs:
+          type: array
+          items:
+            type: string
+          description: Derivado de rationale_refs (ver descripción del módulo)

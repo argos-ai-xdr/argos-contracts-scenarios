@@ -6,35 +6,52 @@ info:
     Consulta de incidentes producidos por el correlator (argos-core).
     Solo lectura: ningún endpoint de esta API permite modificar timeline
     ni evidence_refs una vez emitidos (Incident v1, 6.5).
+
+    Las respuestas son vistas transformadas del Incident v1 completo (ver
+    argos-smartops api/incidents.py: to_queue_item/to_incident_detail), no
+    el envelope entero — la cola solo necesita lo suficiente para priorizar,
+    y el detalle separa explícitamente `facts` (lo observado) de
+    `inferences` (lo derivado), que es justo lo que P0 exige no mezclar.
 servers:
   - url: "https://TODO.argos.internal/incident-api/v1"
 paths:
   /incidents:
     get:
-      summary: Listar incidentes
-      parameters:
-        - name: severity
-          in: query
-          schema:
-            type: string
-            enum: [low, medium, high, critical]
-        - name: since
-          in: query
-          schema:
-            type: string
-            format: date-time
+      summary: Listar incidentes (vista resumida de cola)
       responses:
         "200":
-          description: Lista de incidentes
+          description: Cola de incidentes
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "../schemas/incident/v1.schema.json"
+                  type: object
+                  required: [incident_id, severity, affected_assets, status, observed_at, has_evidence]
+                  properties:
+                    incident_id:
+                      type: string
+                    severity:
+                      type: string
+                      enum: [low, medium, high, critical]
+                    affected_assets:
+                      type: array
+                      items:
+                        type: string
+                      description: id de cada entity con type=asset
+                    status:
+                      type: string
+                      description: >-
+                        Estado operativo (hoy siempre "open" — no hay
+                        transición de estado modelada todavía, ARG-022).
+                    observed_at:
+                      type: string
+                      format: date-time
+                    has_evidence:
+                      type: boolean
   /incidents/{incident_id}:
     get:
-      summary: Obtener un incidente por ID
+      summary: Obtener el detalle de un incidente (hechos e inferencias separados)
       parameters:
         - name: incident_id
           in: path
@@ -43,10 +60,49 @@ paths:
             type: string
       responses:
         "200":
-          description: Incidente
+          description: Detalle del incidente
           content:
             application/json:
               schema:
-                $ref: "../schemas/incident/v1.schema.json"
+                type: object
+                required: [incident_id, severity, facts, inferences]
+                properties:
+                  incident_id:
+                    type: string
+                  severity:
+                    type: string
+                    enum: [low, medium, high, critical]
+                  facts:
+                    type: object
+                    description: Lo observado — nunca inferencia
+                    required: [member_event_ids, timeline, evidence_refs, entities]
+                    properties:
+                      member_event_ids:
+                        type: array
+                        items:
+                          type: string
+                      timeline:
+                        type: array
+                        items:
+                          type: object
+                      evidence_refs:
+                        type: array
+                        items:
+                          type: string
+                      entities:
+                        type: array
+                        items:
+                          type: object
+                  inferences:
+                    type: object
+                    description: Lo derivado — nunca presentado como hecho
+                    required: [attack_techniques, confidence]
+                    properties:
+                      attack_techniques:
+                        type: array
+                        items:
+                          type: string
+                      confidence:
+                        type: string
         "404":
           description: No encontrado

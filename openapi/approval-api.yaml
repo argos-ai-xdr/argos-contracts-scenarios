@@ -12,6 +12,13 @@ paths:
   /approvals:
     post:
       summary: Registrar la decisión de un aprobador sobre una acción propuesta
+      description: >-
+        approver_id NO se envía en el body: el servidor lo asigna a partir de
+        la identidad autenticada, para que un cliente no pueda
+        autoasignarse como aprobador de su propia solicitud (argos-smartops
+        api/approvals.py). plan_hash/signature_ref se calculan en el
+        servidor a partir del PolicyDecision real que action_id referencia
+        (decision_id) — no vienen ni se aceptan del cliente.
       security:
         - oidc: [soc-approver]
       requestBody:
@@ -19,37 +26,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "../schemas/approval/v1.schema.json"
+              type: object
+              required: [action_id, decision, reason, target_confirmed]
+              properties:
+                action_id:
+                  type: string
+                  description: decision_id del PolicyDecision que se aprueba o rechaza
+                decision:
+                  type: string
+                  enum: [APPROVE, REJECT]
+                reason:
+                  type: string
+                  minLength: 10
+                  description: Motivo obligatorio, no un campo vacío o trivial
+                target_confirmed:
+                  type: boolean
+                  description: El operador confirmó explícitamente el target antes de aprobar
       responses:
         "201":
-          description: Approval registrada
+          description: Approval registrada (envelope + campos de Approval v1, firmada)
           content:
             application/json:
               schema:
                 $ref: "../schemas/approval/v1.schema.json"
-        "409":
+        "400":
+          description: target_confirmed es false — el operador debe confirmar el target antes de aprobar
+        "403":
           description: >-
-            El plan_hash de la acción ya no coincide (la acción fue
-            modificada tras generarse la recomendación) — la aprobación
-            se rechaza, no se registra.
-  /approvals/{approval_id}:
-    get:
-      summary: Consultar una aprobación
-      parameters:
-        - name: approval_id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Approval
-          content:
-            application/json:
-              schema:
-                $ref: "../schemas/approval/v1.schema.json"
+            Segregación de funciones: el operador autenticado es el mismo
+            sistema que generó la Recommendation (nunca puede autoaprobar
+            su propia solicitud).
         "404":
-          description: No encontrada
+          description: >-
+            action_id no resuelve a ningún PolicyDecision conocido — no se
+            puede calcular un plan_hash verificable para esta Approval.
+        "422":
+          description: Body inválido (decision fuera de {APPROVE,REJECT}, reason < 10 caracteres, campo obligatorio ausente)
 components:
   securitySchemes:
     oidc:

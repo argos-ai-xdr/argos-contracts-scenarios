@@ -3,39 +3,18 @@ info:
   title: ARGOS Evidence API
   version: "1.0.0"
   description: >-
-    Consulta de evidencia (evidence-writer -> release gate, EvidenceManifest
-    v1). Solo lectura: la evidencia ya escrita no es modificable por ningún
-    cliente de esta API, incluido el agente (ADR-006/ADR-016).
+    Consulta de metadatos de evidencia (EvidenceManifest v1), nunca el
+    contenido del artefacto. Solo lectura: la evidencia ya escrita no es
+    modificable por ningún cliente de esta API, incluido el agente
+    (ADR-006/ADR-016). SmartOps nunca escribe evidencia — eso es exclusivo
+    de argos-core/services/evidence_writer.
 servers:
   - url: "https://TODO.argos.internal/evidence-api/v1"
 paths:
-  /runs/{run_id}/manifest:
-    get:
-      summary: Obtener el EvidenceManifest de una ejecución
-      parameters:
-        - name: run_id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: EvidenceManifest
-          content:
-            application/json:
-              schema:
-                $ref: "../schemas/evidence-manifest/v1.schema.json"
-        "404":
-          description: No encontrado
-  /runs/{run_id}/artifacts/{artifact_id}:
+  /evidence/{artifact_id}:
     get:
       summary: Obtener metadatos de un artefacto de evidencia (no el contenido)
       parameters:
-        - name: run_id
-          in: path
-          required: true
-          schema:
-            type: string
         - name: artifact_id
           in: path
           required: true
@@ -50,6 +29,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../schemas/evidence-manifest/v1.schema.json"
+                type: object
+                required: [artifact_id, media_type, object_ref, sha256, created_at, retention]
+                properties:
+                  artifact_id:
+                    type: string
+                  media_type:
+                    type: string
+                  object_ref:
+                    type: string
+                  sha256:
+                    type: string
+                    pattern: "^[a-f0-9]{64}$"
+                  created_at:
+                    type: string
+                    format: date-time
+                  retention:
+                    type: object
         "404":
           description: No encontrado
