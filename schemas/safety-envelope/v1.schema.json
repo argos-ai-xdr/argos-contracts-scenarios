@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/safety-envelope/v1.schema.json",
+  "title": "SafetyEnvelope v1",
+  "description": "ADR-020, ADR-017 (Fase H). Producido por el Deterministic Safety Kernel (argos-core/services/safety_kernel) entre Recommendation y OPA/PolicyDecision. Los 19 campos son los del prompt maestro de arquitectura objetivo (SOVEREIGN SAFETY KERNEL / SAFETY ENVELOPE). Invariante declarado en el propio prompt: ActionRequest ⊆ SafetyEnvelope. Contrato 11: excepción explícita al conjunto cerrado de 10 (documento maestro v0.5, §6.5), autorizada contrato-por-contrato por ADR-017 -- no reabre la decisión de los ~32 contratos nuevos del prompt en bloque.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v1/argos-envelope.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "envelope_id",
+        "incident_ref",
+        "target_set",
+        "allowed_actions",
+        "forbidden_actions",
+        "max_targets",
+        "max_blast_radius",
+        "max_duration",
+        "execution_environment",
+        "required_runbook",
+        "verification_predicates",
+        "rollback_ref",
+        "policy_ref",
+        "residual_risk",
+        "valid_until",
+        "envelope_hash",
+        "signature"
+      ],
+      "properties": {
+        "envelope_id": {
+          "type": "string",
+          "description": "Identificador propio del SafetyEnvelope, distinto de envelope.id (que es el id del mensaje)."
+        },
+        "incident_ref": {
+          "type": "string",
+          "description": "Incident.incident_id que originó esta evaluación."
+        },
+        "evidence_root": {
+          "type": ["string", "null"],
+          "description": "Mejor referencia real disponible a la evidencia que sustenta la decisión (hoy: un EvidenceManifest.manifest_id si existe; null si no hay evidencia escrita todavía). No es el 'EvidenceRoot' agregador del prompt -- ese no existe (ver architecture/v0.6.25-gap-matrix.md §29)."
+        },
+        "target_set": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["read-only", "dry-run", "execute"] }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "max_targets": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Techo real del MVP: 1 -- ninguna acción del catálogo actual opera sobre más de un target a la vez."
+        },
+        "max_blast_radius": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Techo declarado por el Safety Kernel, alineado con el umbral GO/NARROW de argos-cyber-tools/graph/blast_radius.py (<=2 recursos afectados)."
+        },
+        "max_duration": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Segundos. Igual al timeout_seconds real del tool (tool_catalog), suministrado por el llamante."
+        },
+        "execution_environment": {
+          "type": "string",
+          "description": "Único entorno real de ejecución hoy: argos-cyber-range (ver architecture/trust-zones/trust-zones.md)."
+        },
+        "required_runbook": {
+          "type": "string",
+          "description": "Ruta esperada del runbook (argos-cyber-tools/runbooks/<tool>.md). Su existencia real la confirma el llamante (runbook_exists); este campo es la referencia, no una prueba de que el archivo existe."
+        },
+        "verification_predicates": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Derivados de hechos reales suministrados al Safety Kernel (rollback_supported, blast radius observado) -- nunca texto de relleno."
+        },
+        "rollback_ref": {
+          "type": "string"
+        },
+        "runtime_trust_ref": {
+          "type": ["string", "null"],
+          "description": "RuntimeTrustContext no existe (architecture/v0.6.25-gap-matrix.md §21-38) -- siempre null hoy."
+        },
+        "mission_bounds": {
+          "type": ["object", "null"],
+          "description": "Mission Context no existe -- siempre null hoy."
+        },
+        "policy_ref": {
+          "type": "string",
+          "description": "Única regla de política real y probada hoy: F07 (InMemoryPolicyDecisionPoint)."
+        },
+        "residual_risk": {
+          "type": "string",
+          "description": "Resumen real (no fabricado) de qué checks quedaron NOT_EVALUATED -- nunca 'ninguno' si algún check es None."
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "envelope_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "SHA-256 real sobre el contenido canónico del envelope (excluyendo envelope_hash y signature)."
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "Checksum de integridad (sha256(envelope_hash + incident_ref)), NO una firma criptográfica real -- Sovereign Root of Trust no existe (ARG-002/ARG-020 pendientes). Mismo patrón ya documentado en policies/approval.compute_signature_ref."
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

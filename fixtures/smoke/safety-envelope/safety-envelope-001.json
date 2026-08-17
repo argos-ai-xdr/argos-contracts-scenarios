@@ -1,0 +1,37 @@
+{
+  "id": "safenv-1c8179d069d3473cba38c8af94b94",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-17T15:13:32.491678+00:00",
+  "producer": "safety-kernel",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:ed131ef83ee7289c6510816a099f0c0c766afc56cdf8e489501f65cbaa308b41",
+  "envelope_id": "safenv-1c8179d069d3473cba38c8af94b94",
+  "incident_ref": "incident-smoke-001",
+  "evidence_root": null,
+  "target_set": [
+    "deployment/gseg-simulado"
+  ],
+  "allowed_actions": [
+    "dry-run",
+    "execute"
+  ],
+  "forbidden_actions": [],
+  "max_targets": 1,
+  "max_blast_radius": 2,
+  "max_duration": 30,
+  "execution_environment": "argos-cyber-range",
+  "required_runbook": "runbooks/isolate_kubernetes_workload.md",
+  "verification_predicates": [
+    "rollback_supported==True para 'isolate_kubernetes_workload'",
+    "blast_radius_count<= 2 (observado: 1)"
+  ],
+  "rollback_ref": "rollback/isolate_kubernetes_workload",
+  "runtime_trust_ref": null,
+  "mission_bounds": null,
+  "policy_ref": "F07",
+  "residual_risk": "NOT_EVALUATED: runbook_signed, mission_impact_bounded, runtime_trust_valid — no se asume PASS para ninguno.",
+  "valid_until": "2026-08-17T15:28:32.491678+00:00",
+  "envelope_hash": "sha256:4df63045c6793d4f23dcf94a1e4c70b44b348c2af0b52ac9f6e1cbc35f4116e1",
+  "signature": "sha256:80c2f7507165f4067790e757c0182fd798415b9a8375e085a1f131ccda407c1a"
+}
