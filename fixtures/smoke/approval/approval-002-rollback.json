@@ -1,0 +1,18 @@
+{
+  "id": "01J0SMOKE0000000000000011",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:11:00Z",
+  "producer": "smartops",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000b30000",
+  "approval_id": "approval-smoke-002",
+  "action_id": "policy-smoke-002",
+  "approver_id": "soc-approver-lab-01",
+  "role": "soc-approver",
+  "decision": "APPROVE",
+  "reason": "Verificación posterior a la contención confirma que el aislamiento ya no es necesario; se aprueba rollback",
+  "issued_at": "2026-08-12T10:11:00Z",
+  "expires_at": "2026-08-12T10:26:00Z",
+  "signature_ref": "sig-smoke-002"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "01J0SMOKE0000000000000009",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:12:00Z",
+  "producer": "kubernetes-executor",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000b20000",
+  "action_id": "policy-smoke-002",
+  "idempotency_key": "idem-smoke-rollback-001",
+  "dry_run": false,
+  "started_at": "2026-08-12T10:12:00Z",
+  "ended_at": "2026-08-12T10:12:05Z",
+  "status": "rolled_back",
+  "changed_resources": [
+    "ciliumnetworkpolicy/gseg-simulado-isolate"
+  ],
+  "verification": {
+    "passed": true,
+    "detail": "aislamiento confirmado para deployment/gseg-simulado"
+  },
+  "rollback_ref": "01J0SMOKE0000000000000010"
+}
