@@ -18,7 +18,7 @@ __pycache__/
 .env
 .env.*
 *.local.yaml
-secrets/
+/secrets/
 
 # Snapshots/datasets reales y evidencia — solo manifiestos (hash) en Git, no
 # el contenido completo (ADR-016). Los directorios reales de snapshot bajan
