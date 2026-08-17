@@ -91,7 +91,7 @@
         },
         "mission_bounds": {
           "type": ["object", "null"],
-          "description": "Mission Context no existe -- siempre null hoy."
+          "description": "null si MissionContext no se evaluó para esta acción (o dio INSUFFICIENT_CONTEXT); si no, {mission_blast_radius, mission_context_hash} -- sellado para que independent_verifier pueda re-verificarlo contra la misma referencia (ADR-062/K.1)."
         },
         "policy_ref": {
           "type": "string",
