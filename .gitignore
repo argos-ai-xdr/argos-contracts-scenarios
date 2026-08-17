@@ -23,6 +23,11 @@ secrets/
 # Snapshots/datasets reales y evidencia — solo manifiestos (hash) en Git, no
 # el contenido completo (ADR-016). Los directorios reales de snapshot bajan
 # aquí si alguna vez se materializan localmente.
+# /evidence/ anclado a la raíz: sin la barra inicial coincidiría con
+# cualquier directorio "evidence" del árbol (no afecta hoy a
+# fixtures/*/evidence-manifest/, nombre distinto, pero mismo bug real ya
+# encontrado en argos-validation/harness/evidence/ y
+# argos-control/templates/evidence/, nunca versionados).
 snapshots/**/raw/
-evidence/
+/evidence/
 reports/generated/
