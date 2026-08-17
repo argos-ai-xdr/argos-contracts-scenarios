@@ -1,0 +1,15 @@
+{
+  "run_id": "run-smoke-001",
+  "generated_by": "argos-cyber-tools/graph/attack_path.validate_attack_path (invocacion real contra mcp_gateway.Gateway.authorize, no simulada)",
+  "finding": {
+    "subject": "argos-cyber-range/gseg-simulado-sa",
+    "path": "ServiceAccount -> RoleBinding/ClusterRole -> wildcard total",
+    "rule": null,
+    "reason": "wildcard total",
+    "severity": "critical"
+  },
+  "tool_name": "isolate_kubernetes_workload",
+  "target": "deployment/gseg-simulado",
+  "decision": "VALIDATED",
+  "reason": "execute requiere Approval y no se proporcionó ninguna"
+}

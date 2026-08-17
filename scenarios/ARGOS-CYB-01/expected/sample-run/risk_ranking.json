@@ -1,0 +1,29 @@
+{
+  "run_id": "run-smoke-001",
+  "generated_by": "argos-core/services/risk_engine.rank_findings (invocacion real, no simulada)",
+  "inputs": {
+    "vulnerability_findings": [
+      "fixtures/smoke/vulnerability-finding/cve-lab-001.json"
+    ],
+    "asset_snapshots": [
+      "fixtures/smoke/asset-snapshot/gseg-simulado.json"
+    ]
+  },
+  "ranking": [
+    {
+      "finding_id": "finding-smoke-001",
+      "score": 0.63,
+      "explanation": {
+        "epss": 0.42,
+        "kev": false,
+        "kev_multiplier": 1.0,
+        "asset_criticality": "high",
+        "criticality_weight": 3.0,
+        "criticality_source_asset_id": "asset-gseg-01",
+        "fix_available": true,
+        "fix_factor": 0.5,
+        "source_ref": "snapshots/vulnerability-db/nvd-2026-08-01.json"
+      }
+    }
+  ]
+}
