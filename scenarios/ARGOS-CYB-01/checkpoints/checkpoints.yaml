@@ -1,70 +1,109 @@
 # Secuencia de demostración — documento maestro v0.5, 5.4 (literal).
-# min_evidence es el nombre de archivo mínimo esperado; su contenido real se
-# genera durante la ejecución (no versionado aquí, ver ADR-016) salvo que
-# exista un fixture congelado equivalente en ../../../fixtures/validation/.
+# min_evidence es el nombre de archivo mínimo esperado (texto literal del
+# documento); su contenido real se genera durante la ejecución (no
+# versionado aquí, ver ADR-016) salvo que exista un fixture congelado
+# equivalente en ../../../fixtures/validation/.
+#
+# evidence_files (añadido para ARG-023, integración CP00-CP13 y
+# trazabilidad end-to-end — no está en el documento maestro, es estructura
+# necesaria para que argos-validation/harness/checkpoints.py pueda
+# validar un run real de forma mecánica): un archivo esperado por entrada,
+# con el contrato v1 que debe validar o `null` si es un artefacto interno
+# sin uno de los 10 contratos cerrados que lo cubra (mismo principio que
+# graph/blast_radius.py o dmz_detector en argos-cyber-tools/argos-core).
 checkpoints:
   - id: CP00
     phase: "Reset y atestación"
     observable_action: "Desplegar versión congelada, verificar hashes y ausencia de residuos."
     min_evidence: "baseline_manifest.json"
+    evidence_files:
+      - {filename: baseline_manifest.json, contract: null}
   - id: CP01
     phase: "Inyección controlada"
     observable_action: "Crear workload vulnerable, RBAC excesivo y tráfico sinkhole."
     min_evidence: "deployment_log + change_id"
+    evidence_files:
+      - {filename: deployment_log.json, contract: null}
+      - {filename: change_id.json, contract: null}
   - id: CP02
     phase: "Descubrimiento"
     observable_action: "Actualizar inventario y comparar as-built frente a as-designed."
     min_evidence: "asset_diff.json"
     contract: asset-snapshot
+    evidence_files:
+      - {filename: asset_diff.json, contract: asset-snapshot}
   - id: CP03
     phase: "Vulnerabilidad"
     observable_action: "Ingerir SBOM/scans y resolver CVE-paquete-activo."
     min_evidence: "vulnerability_findings.json"
     contract: vulnerability-finding
+    evidence_files:
+      - {filename: vulnerability_findings.json, contract: vulnerability-finding}
   - id: CP04
     phase: "Priorización"
     observable_action: "Combinar ESP, exposición, KEV, EPSS y fix disponible."
     min_evidence: "risk_ranking.json"
+    evidence_files:
+      - {filename: risk_ranking.json, contract: null}
   - id: CP05
     phase: "Ruta de ataque"
     observable_action: "Construir grafo RBAC/red y validar escalada/blast radius."
     min_evidence: "attack_path.json"
+    evidence_files:
+      - {filename: attack_path.json, contract: null}
   - id: CP06
     phase: "Telemetría"
     observable_action: "Capturar Wazuh, Falco, Hubble y Kubernetes Audit."
     min_evidence: "events.ndjson"
     contract: security-event
+    evidence_files:
+      - {filename: events.ndjson, contract: security-event, format: ndjson}
   - id: CP07
     phase: "Correlación CTI"
     observable_action: "Crear incidente y enriquecerlo desde MISP/ATT&CK versionados."
     min_evidence: "incident.json"
     contract: incident
+    evidence_files:
+      - {filename: incident.json, contract: incident}
   - id: CP08
     phase: "Recomendación"
     observable_action: "LangGraph propone alternativas, impacto, evidencia y rollback."
     min_evidence: "recommendation.json"
     contract: recommendation
+    evidence_files:
+      - {filename: recommendation.json, contract: recommendation}
   - id: CP09
     phase: "Simulación"
     observable_action: "Shuffle ejecuta dry-run y comprueba dependencias afectadas."
     min_evidence: "dry_run_result.json"
     contract: action-result
+    evidence_files:
+      - {filename: dry_run_result.json, contract: action-result}
   - id: CP10
     phase: "Aprobación HITL"
     observable_action: "Operador aprueba/rechaza con identidad, motivo y caducidad."
     min_evidence: "approval.json"
     contract: approval
+    evidence_files:
+      - {filename: approval.json, contract: approval}
   - id: CP11
     phase: "Contención"
     observable_action: "Aplicar política reversible únicamente si la aprobación es válida."
     min_evidence: "action_result.json"
     contract: action-result
+    evidence_files:
+      - {filename: action_result.json, contract: action-result}
   - id: CP12
     phase: "Verificación/rollback"
     observable_action: "Confirmar bloqueo, salud y restauración del estado inicial."
     min_evidence: "verification.json"
+    evidence_files:
+      - {filename: verification.json, contract: null}
   - id: CP13
     phase: "SOC y evidencia"
     observable_action: "Exportar handover filtrado y cerrar evidence pack firmado."
     min_evidence: "handover + manifest"
     contract: [soc-handover, evidence-manifest]
+    evidence_files:
+      - {filename: handover.json, contract: soc-handover}
+      - {filename: manifest.json, contract: evidence-manifest}

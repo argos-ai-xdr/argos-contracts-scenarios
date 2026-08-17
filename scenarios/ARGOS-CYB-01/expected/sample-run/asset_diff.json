@@ -1,0 +1,21 @@
+{
+  "id": "01J0SMOKE0000000000000002",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T09:00:00Z",
+  "producer": "netbox-adapter",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000ab0000",
+  "asset_id": "asset-gseg-01",
+  "workload_id": "deployment/gseg-simulado",
+  "image_ref": "registry/argos/gseg-simulado@sha256:1111111111111111111111111111111111111111111111111111111111bb",
+  "node": "node-lab-01",
+  "namespace": "argos-cyber-range",
+  "criticality_esp": "high",
+  "relationships": {
+    "identity_ref": "serviceaccount/gseg-simulado",
+    "network_refs": [
+      "dmz-sinkhole-01"
+    ]
+  }
+}

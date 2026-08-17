@@ -100,6 +100,24 @@ def main() -> int:
             if errors:
                 failures.append(f"adversarial/{case['fixture']} ({case['id']}): {errors}")
 
+    # checkpoints.yaml (ARG-023): evidence_files.contract, cuando no es
+    # null, debe apuntar a uno de los 10 contratos v1 reales — evita que
+    # este archivo se desincronice en silencio si un contrato se renombra.
+    checkpoints_path = ROOT / "scenarios" / "ARGOS-CYB-01" / "checkpoints" / "checkpoints.yaml"
+    if checkpoints_path.exists():
+        known_contracts = {p.name for p in SCHEMAS_DIR.iterdir() if p.is_dir()}
+        checkpoints = yaml.safe_load(checkpoints_path.read_text(encoding="utf-8")).get("checkpoints", [])
+        checked += len(checkpoints)
+        ids = [cp["id"] for cp in checkpoints]
+        dupes = {i for i in ids if ids.count(i) > 1}
+        if dupes:
+            failures.append(f"checkpoints.yaml: id duplicado {sorted(dupes)}")
+        for cp in checkpoints:
+            for ev in cp.get("evidence_files", []):
+                contract = ev.get("contract")
+                if contract is not None and contract not in known_contracts:
+                    failures.append(f"checkpoints.yaml: {cp['id']} referencia contract={contract!r}, no existe en schemas/")
+
     if failures:
         print(f"VALIDACIÓN DE FIXTURES FALLIDA ({len(failures)} de {checked}):")
         for f in failures:

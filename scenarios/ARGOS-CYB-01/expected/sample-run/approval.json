@@ -1,0 +1,18 @@
+{
+  "id": "01J0SMOKE0000000000000007",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-12T10:08:00Z",
+  "producer": "smartops",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000b00000",
+  "approval_id": "approval-smoke-001",
+  "action_id": "policy-smoke-001",
+  "approver_id": "soc-approver-lab-01",
+  "role": "soc-approver",
+  "decision": "APPROVE",
+  "reason": "Dry-run verificado sin impacto en otros servicios; se aprueba contención reversible",
+  "issued_at": "2026-08-12T10:08:00Z",
+  "expires_at": "2026-08-12T10:23:00Z",
+  "signature_ref": "sig-smoke-001"
+}
