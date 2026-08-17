@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/safety-envelope/v1.schema.json",
   "title": "SafetyEnvelope v1",
-  "description": "ADR-020, ADR-017 (Fase H). Producido por el Deterministic Safety Kernel (argos-core/services/safety_kernel) entre Recommendation y OPA/PolicyDecision. Los 19 campos son los del prompt maestro de arquitectura objetivo (SOVEREIGN SAFETY KERNEL / SAFETY ENVELOPE). Invariante declarado en el propio prompt: ActionRequest ⊆ SafetyEnvelope. Contrato 11: excepción explícita al conjunto cerrado de 10 (documento maestro v0.5, §6.5), autorizada contrato-por-contrato por ADR-017 -- no reabre la decisión de los ~32 contratos nuevos del prompt en bloque.",
+  "description": "ADR-054, ADR-051 (Fase H). Producido por el Deterministic Safety Kernel (argos-core/services/safety_kernel) entre Recommendation y OPA/PolicyDecision. Los 19 campos son los del prompt maestro de arquitectura objetivo (SOVEREIGN SAFETY KERNEL / SAFETY ENVELOPE). Invariante declarado en el propio prompt: ActionRequest ⊆ SafetyEnvelope. Contrato 11: excepción explícita al conjunto cerrado de 10 (documento maestro v0.5, §6.5), autorizada contrato-por-contrato por ADR-051 -- no reabre la decisión de los ~32 contratos nuevos del prompt en bloque.",
   "allOf": [
     {
       "$ref": "../../envelope/v1/argos-envelope.schema.json"
