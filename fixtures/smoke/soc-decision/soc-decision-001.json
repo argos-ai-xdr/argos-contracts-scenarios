@@ -1,0 +1,16 @@
+{
+  "id": "01J0SMOKE000000000000000C",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T12:00:20Z",
+  "producer": "argos-smartops",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0006",
+  "decision_id": "socdec-smoke-001",
+  "subject_ref": "01J0SMOKE000000000000000B",
+  "decision": "CONFIRMED_THREAT",
+  "rationale": "Patrón de fuerza bruta confirmado contra tres cuentas de servicio en el último mes",
+  "decided_by": "soc-1",
+  "decided_at": "2026-08-18T12:00:20Z",
+  "recommendation_ref": null
+}

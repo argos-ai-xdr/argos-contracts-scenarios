@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/wazuh-rule-spec/v1.schema.json",
+  "title": "WazuhRuleSpec v1",
+  "description": "ADR-069, Fase N. DERIVADO. Única entrada aceptada por el compilador determinista de argos-core/services/rule_engineering -- el LLM produce ESTO, nunca XML de Wazuh directamente (AI_DIRECT_RULE_DEPLOYMENT=DENY). IDs de regla reales deben caer en el rango 100000-120000 reservado por Wazuh para reglas custom.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["rule_spec_id", "reason", "severity_level", "description", "investigation_ref"],
+      "properties": {
+        "rule_spec_id": { "type": "string" },
+        "reason": { "type": "string", "description": "Por qué se propone esta regla -- referencia al patrón confirmado, no texto de relleno." },
+        "parent_rule_sid": { "type": ["string", "null"], "description": "if_matched_sid -- regla padre en la jerarquía Wazuh, si aplica." },
+        "correlation": {
+          "type": "object",
+          "properties": {
+            "frequency": { "type": "integer", "minimum": 1 },
+            "timeframe_seconds": { "type": "integer", "minimum": 1 },
+            "same_source_ip": { "type": "boolean" },
+            "same_user": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "severity_level": { "type": "integer", "minimum": 1, "maximum": 15 },
+        "description": { "type": "string" },
+        "mitre_ids": { "type": "array", "items": { "type": "string" } },
+        "groups": { "type": "array", "items": { "type": "string" } },
+        "investigation_ref": { "type": "string", "description": "envelope.id del ThreatAssessment que justifica esta regla -- sin origen investigado, sin RuleSpec." },
+        "evidence_root": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

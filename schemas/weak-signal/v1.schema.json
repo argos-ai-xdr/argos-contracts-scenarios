@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/weak-signal/v1.schema.json",
+  "title": "WeakSignal v1",
+  "description": "ADR-069, Fase N. DERIVADO -- no procede del docx v0.5. Una señal de severidad baja pero con contexto suficiente para justificar escalado a investigación global (nunca 'cualquier evento'). Productor: correlator/normalizer (argos-core) -> ARGOS Global Investigator.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["signal_id", "source_event_refs", "severity_native", "escalation_reason"],
+      "properties": {
+        "signal_id": { "type": "string" },
+        "source_event_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "envelope.id de cada SecurityEvent que compone la señal -- nunca se afirma sin referencia real."
+        },
+        "asset_id": { "type": "string" },
+        "severity_native": { "type": "string", "description": "Severidad tal como la emitió la fuente -- WeakSignal por definición no es severidad alta por sí sola." },
+        "escalation_reason": {
+          "type": "string",
+          "description": "Por qué esta señal, pese a severidad baja, justifica investigación (p. ej. combinación de factores atípicos) -- nunca 'porque sí'."
+        },
+        "contributing_factors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Factores individuales de bajo riesgo que en conjunto motivan el escalado (p. ej. login atípico + proceso inusual + conexión saliente)."
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

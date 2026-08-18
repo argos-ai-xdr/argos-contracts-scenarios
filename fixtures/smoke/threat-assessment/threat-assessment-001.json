@@ -1,0 +1,19 @@
+{
+  "id": "01J0SMOKE000000000000000A",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T12:00:10Z",
+  "producer": "argos-investigator",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0004",
+  "assessment_id": "assess-smoke-001",
+  "investigation_refs": ["01J0SMOKE0000000000000009"],
+  "conclusion": "SUSPICIOUS",
+  "evidence_refs": ["01J0SMOKE0000000000000008", "01J0SMOKE0000000000000009"],
+  "attack_techniques": ["T1078"],
+  "affected_assets": ["asset-gseg-01"],
+  "affected_identities": ["user-demo-1"],
+  "mission_impact": null,
+  "hypotheses": ["Escalada de privilegios en curso", "Actividad administrativa legítima fuera de horario"],
+  "unknowns": ["No se confirmó si el usuario autorizó la sesión fuera de horario"]
+}

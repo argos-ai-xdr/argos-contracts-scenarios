@@ -1,0 +1,15 @@
+{
+  "id": "01J0SMOKE0000000000000009",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T12:00:05Z",
+  "producer": "argos-investigator",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0003",
+  "investigation_id": "inv-smoke-001",
+  "weak_signal_ref": "01J0SMOKE0000000000000008",
+  "context_level": "L1",
+  "hypothesis": "El proceso poco habitual pertenece a una cadena de escalada de privilegios ya vista en otros activos",
+  "sources_queried": ["opensearch_alerts", "semantic_graph"],
+  "escalated_from": null
+}

@@ -1,0 +1,24 @@
+{
+  "id": "01J0SMOKE000000000000000B",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T12:00:15Z",
+  "producer": "argos-rule-engineering",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0005",
+  "rule_spec_id": "rulespec-smoke-001",
+  "reason": "repeated_suspicious_authentication_activity",
+  "parent_rule_sid": "5710",
+  "correlation": {
+    "frequency": 8,
+    "timeframe_seconds": 120,
+    "same_source_ip": true,
+    "same_user": false
+  },
+  "severity_level": 10,
+  "description": "Repeated suspicious authentication activity",
+  "mitre_ids": ["T1110"],
+  "groups": ["authentication_failure", "brute_force"],
+  "investigation_ref": "01J0SMOKE000000000000000A",
+  "evidence_root": null
+}

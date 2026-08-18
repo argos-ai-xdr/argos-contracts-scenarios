@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/global-investigation-request/v1.schema.json",
+  "title": "GlobalInvestigationRequest v1",
+  "description": "ADR-069, Fase N. DERIVADO. Expansión de contexto DECLARADA y progresiva (L0-L5) -- nunca 'consultar todo' implícito. Productor: ARGOS Global Investigator (argos-core/services/investigator).",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["investigation_id", "weak_signal_ref", "context_level", "hypothesis"],
+      "properties": {
+        "investigation_id": { "type": "string" },
+        "weak_signal_ref": { "type": "string", "description": "envelope.id del WeakSignal que originó esta investigación." },
+        "context_level": {
+          "type": "string",
+          "enum": ["L0", "L1", "L2", "L3", "L4", "L5"],
+          "description": "Nivel de expansión de contexto de ESTE paso -- L0=evento actual, L5=entorno completo (solo si la hipótesis lo justifica)."
+        },
+        "hypothesis": { "type": "string", "description": "Qué se está tratando de confirmar/descartar en este paso -- nunca una consulta sin propósito declarado." },
+        "sources_queried": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["opensearch_alerts", "opensearch_archives", "semantic_graph", "mission_context", "cti"] }
+        },
+        "escalated_from": { "type": ["string", "null"], "description": "investigation_id del paso anterior si este es una escalada L(n) -> L(n+1), null si es el primer paso (L0)." }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

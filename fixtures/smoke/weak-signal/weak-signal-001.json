@@ -1,0 +1,15 @@
+{
+  "id": "01J0SMOKE0000000000000008",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T12:00:00Z",
+  "producer": "correlator",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0002",
+  "signal_id": "weaksig-smoke-001",
+  "source_event_refs": ["01J0SMOKE0000000000000001"],
+  "asset_id": "asset-gseg-01",
+  "severity_native": "3",
+  "escalation_reason": "Login atípico + proceso poco habitual + conexión saliente, cada uno de severidad baja individualmente",
+  "contributing_factors": ["atypical_login_time", "unusual_process", "outbound_connection_new_destination"]
+}

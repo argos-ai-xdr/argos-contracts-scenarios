@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/soc-decision/v1.schema.json",
+  "title": "SOCDecision v1",
+  "description": "ADR-069, Fase N. DERIVADO. Decisión humana sobre un ThreatAssessment o un WazuhRuleSpec -- distinto de Approval v1 (que autoriza EJECUCIÓN de una acción de respuesta real, ADR-011). SOCDecision es la puerta de entrada al ciclo de ingeniería de detección, no reemplaza el Approval que sigue exigiendo mcp_gateway para cualquier acción de respuesta real.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["decision_id", "subject_ref", "decision", "decided_by", "decided_at"],
+      "properties": {
+        "decision_id": { "type": "string" },
+        "subject_ref": { "type": "string", "description": "envelope.id del ThreatAssessment o WazuhRuleSpec sobre el que decide." },
+        "decision": {
+          "type": "string",
+          "enum": ["BENIGN", "FALSE_POSITIVE", "MONITOR", "SUSPICIOUS", "CONFIRMED_THREAT", "NEEDS_MORE_DATA"]
+        },
+        "rationale": { "type": "string" },
+        "decided_by": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "recommendation_ref": { "type": ["string", "null"], "description": "Si decision=NEEDS_MORE_DATA, referencia a la Recommendation (p. ej. increase_monitoring) generada en consecuencia." }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

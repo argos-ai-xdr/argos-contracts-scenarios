@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/threat-assessment/v1.schema.json",
+  "title": "ThreatAssessment v1",
+  "description": "ADR-069, Fase N. DERIVADO. Conclusión de una investigación global -- nunca un YES/NO binario, y nunca sin evidence_refs. Productor: ARGOS Global Investigator -> SOC.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["assessment_id", "investigation_refs", "conclusion", "evidence_refs"],
+      "properties": {
+        "assessment_id": { "type": "string" },
+        "investigation_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "envelope.id de cada GlobalInvestigationRequest que contribuyó a esta conclusión (L0..Ln recorridos)."
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": ["BENIGN", "SUSPICIOUS", "LIKELY_THREAT", "CONFIRMED_PATTERN", "INSUFFICIENT_EVIDENCE", "CONFLICTING_EVIDENCE"]
+        },
+        "evidence_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "attack_techniques": { "type": "array", "items": { "type": "string", "pattern": "^T\\d{4}(\\.\\d{3})?$" } },
+        "affected_assets": { "type": "array", "items": { "type": "string" } },
+        "affected_identities": { "type": "array", "items": { "type": "string" } },
+        "mission_impact": { "type": ["string", "null"], "description": "Referencia a MissionContext si se evaluó; null si no aplica/no se evaluó." },
+        "hypotheses": { "type": "array", "items": { "type": "string" }, "description": "Hipótesis consideradas, no solo la ganadora -- transparencia del razonamiento." },
+        "unknowns": { "type": "array", "items": { "type": "string" }, "description": "Qué no se pudo determinar -- nunca se omite por presentar una conclusión más limpia." }
+      },
+      "additionalProperties": true
+    }
+  ]
+}
