@@ -1,0 +1,37 @@
+{
+  "id": "01J0SMOKE0000000000000007",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T10:00:00Z",
+  "producer": "wazuh-adapter",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0001",
+  "native_ref": "wazuh://alert/55100",
+  "event_id": "evt-smoke-007",
+  "source": "falco",
+  "asset_id": "asset-gseg-01",
+  "workload_id": "deployment/gseg-simulado",
+  "severity_native": "12",
+  "severity_normalized": "high",
+  "source_priority": "Critical",
+  "detection": {
+    "wazuh_rule_id": "100050",
+    "wazuh_level": 12,
+    "groups": ["falco", "attack"],
+    "mitre_ids": ["T1059"]
+  },
+  "correlation": {
+    "correlation_key": "attack-falco-subproc-demo",
+    "aggregation_method": "wazuh_same_source_ip",
+    "timeframe_seconds": 120,
+    "occurrence_count": 50,
+    "first_seen": "2026-08-18T10:00:00Z",
+    "last_seen": "2026-08-18T10:00:49Z",
+    "related_event_refs": ["01J0SMOKE0000000000000007"]
+  },
+  "provenance": {
+    "falco_rule_version": "0.1.0-demo",
+    "wazuh_ruleset_version": "0.1.0-demo",
+    "configuration_hash": "sha256:1111111111111111111111111111111111111111111111111111111111110001"
+  }
+}

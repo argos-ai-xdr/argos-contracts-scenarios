@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/security-event/v1.schema.json",
   "title": "SecurityEvent v1",
-  "description": "Campos literales del documento maestro v0.5, 5.5 ('Event': event_id, schema_version, source, observed_at, asset_id, workload_id, severity, raw_ref, hash) reconciliados con ADR-001 (native_ref sustituye a raw_ref; envelope OCSF-aligned). Productor: Wazuh/Falco/Hubble/Audit -> correlator.",
+  "description": "Campos literales del documento maestro v0.5, 5.5 ('Event': event_id, schema_version, source, observed_at, asset_id, workload_id, severity, raw_ref, hash) reconciliados con ADR-001 (native_ref sustituye a raw_ref; envelope OCSF-aligned). Productor: Wazuh/Falco/Hubble/Audit -> correlator. `source_priority`/`detection`/`correlation`/`enrichment`/`provenance` (2026-08-18, DERIVADO -- no proceden del docx v0.5, ver architecture/notes/falco-wazuh-correlation.md en argos-control) aterrizan capacidades reales de Wazuh (severity mapping, grouping, if_sid, MITRE, CDB lookups) descritas por el equipo XDR/Wazuh; opcionales y solo se rellenan cuando la fuente real las suministra -- nunca se fabrican.",
   "allOf": [
     {
       "$ref": "../../envelope/v1/argos-envelope.schema.json"
@@ -42,6 +42,56 @@
             "high",
             "critical"
           ]
+        },
+        "source_priority": {
+          "type": "string",
+          "description": "Prioridad/severidad tal como la emite la fuente NATIVA anterior a Wazuh (p. ej. la priority de una regla Falco) cuando esa fuente es distinta de severity_native (que es el valor nativo de Wazuh). Se conserva junto a severity_native/severity_normalized, no se sustituye -- evita perder procedencia al normalizar (correo real del equipo XDR/Wazuh, 2026-08-18)."
+        },
+        "detection": {
+          "type": "object",
+          "description": "Metadatos de la regla Wazuh que produjo/reclasificó este evento -- capacidades reales de Wazuh (severity mapping, group, if_sid, MITRE tagging) descritas por el equipo XDR/Wazuh.",
+          "properties": {
+            "wazuh_rule_id": { "type": "string" },
+            "wazuh_level": { "type": "integer" },
+            "groups": { "type": "array", "items": { "type": "string" }, "description": "rule.groups[] de Wazuh (tag temático, p. ej. attack, authentication_failed)." },
+            "parent_rule_id": { "type": "string", "description": "if_sid: regla padre en una relación de jerarquía Wazuh, si aplica." },
+            "mitre_ids": { "type": "array", "items": { "type": "string" }, "description": "rule.mitre.id de Wazuh -- técnica/táctica ATT&CK atribuida por la REGLA, no necesariamente ground truth (ver correlator, AC08)." }
+          },
+          "additionalProperties": true
+        },
+        "correlation": {
+          "type": "object",
+          "description": "Agregación de primer nivel (Wazuh frequency/timeframe/if_matched_sid/if_matched_group/same_source_ip/same_user, o equivalente) o la que aplica correlator.dedupe_by_correlation_key sobre eventos que comparten correlation_key -- nunca se pierde la referencia a cada evento original.",
+          "properties": {
+            "correlation_key": { "type": "string", "description": "Hecho suministrado por quien produce/normaliza el evento -- este contrato no prescribe cómo se calcula." },
+            "aggregation_method": { "type": "string", "description": "p. ej. wazuh_frequency, wazuh_same_source_ip, correlator_dedupe." },
+            "timeframe_seconds": { "type": "integer" },
+            "occurrence_count": { "type": "integer", "minimum": 1 },
+            "first_seen": { "type": "string", "format": "date-time" },
+            "last_seen": { "type": "string", "format": "date-time" },
+            "related_event_refs": { "type": "array", "items": { "type": "string" }, "description": "envelope.id de cada evento original agregado -- incluye el propio evento base." }
+          },
+          "additionalProperties": true
+        },
+        "enrichment": {
+          "type": "object",
+          "description": "Enriquecimiento vía CDB lookups de Wazuh (IP reputation, hashes/IoC) u otra fuente de threat intel.",
+          "properties": {
+            "cdb_matches": { "type": "array", "items": { "type": "object" } },
+            "threat_intel_refs": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": true
+        },
+        "provenance": {
+          "type": "object",
+          "description": "Versionado de la configuración de detección que produjo este evento -- para poder demostrar de dónde salió una clasificación/enriquecimiento concreto, no solo afirmarlo.",
+          "properties": {
+            "falco_rule_version": { "type": "string" },
+            "wazuh_ruleset_version": { "type": "string" },
+            "custom_rule_version": { "type": "string" },
+            "configuration_hash": { "type": "string" }
+          },
+          "additionalProperties": true
         }
       },
       "additionalProperties": true
