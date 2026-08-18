@@ -1,0 +1,16 @@
+{
+  "id": "01J0SMOKE000000000000000G",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T13:15:00Z",
+  "producer": "argos-rule-engineering",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af000a",
+  "decoder_spec_id": "decoderspec-smoke-001",
+  "reason": "Extraer usuario y source_ip de un formato de log custom no cubierto por decoders existentes",
+  "program_name": "custom-app",
+  "parent_decoder": null,
+  "regex": "^user=(\\S+) src_ip=(\\S+)$",
+  "order": ["user", "srcip"],
+  "investigation_ref": "01J0SMOKE000000000000000A"
+}

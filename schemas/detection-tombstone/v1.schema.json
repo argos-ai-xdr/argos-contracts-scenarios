@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/detection-tombstone/v1.schema.json",
+  "title": "DetectionTombstone v1",
+  "description": "ADR-070, Fase N (DE-23). DERIVADO. Supresión ACOTADA de una combinación entidad+firma de señales, con caducidad -- nunca borra ni modifica el evento original, nunca suprime globalmente. Invariante: Tombstone != delete event, != modify historical evidence, != global suppression. Al caducar (valid_until), la señal vuelve a ser visible sin acción adicional.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["tombstone_id", "entity_refs", "signal_signature", "classification_ref", "analyst_ref", "reason", "valid_from", "valid_until"],
+      "properties": {
+        "tombstone_id": { "type": "string" },
+        "entity_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Alcance acotado -- nunca vacío (un tombstone sin entidades sería supresión global, prohibido)." },
+        "signal_signature": { "type": "string" },
+        "classification_ref": { "type": "string", "description": "envelope.id de la Classification (BENIGN/FALSE_POSITIVE) que motiva este tombstone." },
+        "analyst_ref": { "type": "string" },
+        "reason": { "type": "string" },
+        "valid_from": { "type": "string", "format": "date-time" },
+        "valid_until": { "type": "string", "format": "date-time", "description": "Obligatorio -- un tombstone sin caducidad sería supresión permanente, prohibido (DE-23)." },
+        "evidence_refs": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

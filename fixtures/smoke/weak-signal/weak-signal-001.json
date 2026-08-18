@@ -11,5 +11,10 @@
   "asset_id": "asset-gseg-01",
   "severity_native": "3",
   "escalation_reason": "Login atípico + proceso poco habitual + conexión saliente, cada uno de severidad baja individualmente",
-  "contributing_factors": ["atypical_login_time", "unusual_process", "outbound_connection_new_destination"]
+  "contributing_factors": ["atypical_login_time", "unusual_process", "outbound_connection_new_destination"],
+  "source_mode": "REAL",
+  "origin_system": "wazuh",
+  "candidate_id": null,
+  "parent_event_refs": [],
+  "generation_depth": 0
 }

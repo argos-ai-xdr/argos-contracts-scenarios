@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/detection-model-manifest/v1.schema.json",
+  "title": "DetectionModelManifest v1",
+  "description": "ADR-070, Fase N. DERIVADO. Gobernanza del detector estadístico (nunca un LLM, DE-21): ningún anomaly_score se interpreta sin poder responder con qué modelo/features/baseline/threshold/versión ACTIVE se produjo. Mismo ciclo Shadow->Evaluation->Promotion->Drift->Rollback que el resto de componentes de IA (ai-component-registry.yaml) -- el feedback del SOC NUNCA cambia esto directamente (DE-28).",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["model_id", "algorithm", "version", "features", "training_window", "threshold", "state"],
+      "properties": {
+        "model_id": { "type": "string" },
+        "algorithm": { "type": "string", "description": "p. ej. isolation_forest, one_class_svm, lof -- nunca un LLM (DE-21)." },
+        "version": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "training_window": { "type": "string", "description": "Rango temporal de los datos de entrenamiento." },
+        "baseline_dataset_ref": { "type": ["string", "null"] },
+        "ground_truth_dataset_ref": { "type": ["string", "null"] },
+        "threshold": { "type": "number" },
+        "contamination_assumption": { "type": ["number", "null"] },
+        "source_modes_allowed": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["REAL", "SYNTHETIC"] },
+          "description": "Nunca incluye CANDIDATE -- un modelo no se entrena ni evalúa contra sus propios candidatos (evita realimentación, ver DE-19)."
+        },
+        "metrics": { "type": "object" },
+        "drift_baseline_ref": { "type": ["string", "null"] },
+        "state": {
+          "type": "string",
+          "enum": ["SHADOW", "EVALUATION", "ACTIVE", "DEPRECATED", "ROLLED_BACK"],
+          "description": "Mismo vocabulario que ai-component-registry.yaml -- promoción a ACTIVE nunca es automática desde feedback SOC (DE-28)."
+        },
+        "promoted_at": { "type": ["string", "null"], "format": "date-time" },
+        "ai_bom_ref": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

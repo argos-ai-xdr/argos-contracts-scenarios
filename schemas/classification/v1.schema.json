@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/classification/v1.schema.json",
+  "title": "Classification v1",
+  "description": "ADR-070, Fase N. DERIVADO. Artefacto de FEEDBACK derivado e inmutable -- referencia un SOCDecision v1 ya emitido, NUNCA lo sustituye ni compite por ser 'la decisión del SOC' (esa autoridad sigue siendo exclusiva de SOCDecision v1, ADR-069). Cadena: ThreatAssessment -> SOCDecision -> Classification -> feedback/model/rules. Productor: SmartOps/knowledge loop.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["classification_id", "soc_decision_ref", "label", "entity_refs", "signal_signature"],
+      "properties": {
+        "classification_id": { "type": "string" },
+        "soc_decision_ref": { "type": "string", "description": "envelope.id del SOCDecision v1 que esta Classification deriva -- obligatorio, nunca se crea sin un acto humano previo." },
+        "label": {
+          "type": "string",
+          "enum": ["BENIGN", "FALSE_POSITIVE", "CONFIRMED_THREAT", "REDUCIBLE_PATTERN", "NON_REDUCIBLE_PATTERN"],
+          "description": "REDUCIBLE_PATTERN/NON_REDUCIBLE_PATTERN distinguen si el patrón confirmado admite una regla determinista (WazuhRuleSpec) o requiere seguir tratándose como ai_confirmed (DE-30)."
+        },
+        "entity_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "signal_signature": { "type": "string", "description": "Firma determinista de las señales que componen este caso -- misma firma que usa DetectionTombstone v1 para acotar su alcance." },
+        "feature_summary": { "type": "object", "description": "Resumen de las features/factores relevantes en el momento de la clasificación -- para reproducibilidad, no para reentrenar en caliente." }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

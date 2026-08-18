@@ -1,0 +1,18 @@
+{
+  "id": "01J0SMOKE000000000000000E",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T13:05:00Z",
+  "producer": "argos-smartops",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0008",
+  "tombstone_id": "tomb-smoke-001",
+  "entity_refs": ["asset-gseg-01"],
+  "signal_signature": "sha256:3333333333333333333333333333333333333333333333333333333333330001",
+  "classification_ref": "01J0SMOKE000000000000000D",
+  "analyst_ref": "soc-1",
+  "reason": "Mantenimiento programado conocido -- patrón de reinicios repetidos ya explicado",
+  "valid_from": "2026-08-18T13:05:00Z",
+  "valid_until": "2026-08-25T13:05:00Z",
+  "evidence_refs": ["01J0SMOKE000000000000000D"]
+}

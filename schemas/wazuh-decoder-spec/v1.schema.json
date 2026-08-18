@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/wazuh-decoder-spec/v1.schema.json",
+  "title": "WazuhDecoderSpec v1",
+  "description": "ADR-070, Fase N. DERIVADO. SPECIFIED / NOT_IMPLEMENTED -- gap real, deliberadamente separado de WazuhRuleSpec v1 (ADR-069): un decoder y una regla de Wazuh son artefactos distintos, no se fuerza uno dentro del otro. Ningún compilador real existe todavía para este contrato (services/rule_engineering.compile_decoder_spec_to_xml lanza NotImplementedError citando este ADR) -- se declara el schema para que el contrato exista cuando se implemente, sin fabricar un compilador prematuro.",
+  "allOf": [
+    { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
+    {
+      "type": "object",
+      "required": ["decoder_spec_id", "reason", "program_name", "investigation_ref"],
+      "properties": {
+        "decoder_spec_id": { "type": "string" },
+        "reason": { "type": "string" },
+        "program_name": { "type": "string", "description": "Nombre del decoder Wazuh (p. ej. program_name de un <decoder>)." },
+        "parent_decoder": { "type": ["string", "null"] },
+        "regex": { "type": ["string", "null"], "description": "Patrón de extracción propuesto -- validado por el compilador (cuando exista), nunca aplicado sin esa validación." },
+        "order": { "type": "array", "items": { "type": "string" }, "description": "Campos extraídos, en orden." },
+        "investigation_ref": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

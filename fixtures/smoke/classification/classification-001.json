@@ -1,0 +1,15 @@
+{
+  "id": "01J0SMOKE000000000000000D",
+  "schema_version": "1.0.0",
+  "observed_at": "2026-08-18T13:00:00Z",
+  "producer": "argos-smartops",
+  "classification": "internal",
+  "run_id": "run-smoke-001",
+  "payload_hash": "sha256:0000000000000000000000000000000000000000000000000000000000af0007",
+  "classification_id": "class-smoke-001",
+  "soc_decision_ref": "01J0SMOKE000000000000000C",
+  "label": "REDUCIBLE_PATTERN",
+  "entity_refs": ["asset-gseg-01", "user-demo-1"],
+  "signal_signature": "sha256:2222222222222222222222222222222222222222222222222222222222220001",
+  "feature_summary": {"failed_logins_per_minute": 8, "source_ip_diversity": 1}
+}

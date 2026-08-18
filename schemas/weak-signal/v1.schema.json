@@ -2,12 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/argos-ai-xdr/argos-contracts-scenarios/schemas/weak-signal/v1.schema.json",
   "title": "WeakSignal v1",
-  "description": "ADR-069, Fase N. DERIVADO -- no procede del docx v0.5. Una señal de severidad baja pero con contexto suficiente para justificar escalado a investigación global (nunca 'cualquier evento'). Productor: correlator/normalizer (argos-core) -> ARGOS Global Investigator.",
+  "description": "ADR-069, Fase N. DERIVADO -- no procede del docx v0.5. Una señal de severidad baja pero con contexto suficiente para justificar escalado a investigación global (nunca 'cualquier evento'). Productor: correlator/normalizer (argos-core) -> ARGOS Global Investigator. Campos de provenance (ADR-070, 2026-08-18): source_mode/origin_system/candidate_id/parent_event_refs/generation_depth -- protección estructural contra bucle recursivo (DE-19) y contra mezclar telemetría sintética/candidata con REAL (DE-20/DE-29).",
   "allOf": [
     { "$ref": "../../envelope/v1/argos-envelope.schema.json" },
     {
       "type": "object",
-      "required": ["signal_id", "source_event_refs", "severity_native", "escalation_reason"],
+      "required": ["signal_id", "source_event_refs", "severity_native", "escalation_reason", "source_mode"],
       "properties": {
         "signal_id": { "type": "string" },
         "source_event_refs": {
@@ -26,6 +26,26 @@
           "type": "array",
           "items": { "type": "string" },
           "description": "Factores individuales de bajo riesgo que en conjunto motivan el escalado (p. ej. login atípico + proceso inusual + conexión saliente)."
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": ["REAL", "SYNTHETIC", "CANDIDATE"],
+          "description": "Obligatorio, fijado en el origen, nunca cambia tras creado (DE-20/DE-29). REAL=telemetría real; SYNTHETIC=generador de laboratorio (IDLAB-05/06), nunca se mezcla con REAL; CANDIDATE=publicado por el propio ARGOS (p. ej. sidecar Wazuh de un CandidateFinding)."
+        },
+        "origin_system": {
+          "type": "string",
+          "description": "Sistema que produjo la señal (p. ej. 'wazuh', 'argos-ai'). Cuando source_mode=CANDIDATE y origin_system='argos-ai', DE-19 impide que esta señal dispare automáticamente otra investigación."
+        },
+        "candidate_id": { "type": ["string", "null"], "description": "Referencia al CandidateFinding de origen si source_mode=CANDIDATE; null en cualquier otro caso." },
+        "parent_event_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Cadena de señales/eventos que llevaron a esta -- permite reconstruir el linaje completo y detectar recursión."
+        },
+        "generation_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "0 para una señal REAL/SYNTHETIC de origen. Se incrementa por cada salto CANDIDATE->investigación->CANDIDATE -- DE-19 corta antes de que esto ocurra, pero el campo permite auditar si alguna vez pasara."
         }
       },
       "additionalProperties": true
